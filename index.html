@@ -73,7 +73,7 @@
             z-index: 1000;
         }
 
-        .theme-toggle, .toc-toggle {
+        .theme-toggle, .toc-toggle, .blog-link {
             background: var(--secondary-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
@@ -82,9 +82,11 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .theme-toggle:hover, .toc-toggle:hover {
+        .theme-toggle:hover, .toc-toggle:hover, .blog-link:hover {
             background: var(--accent-color);
             color: var(--bg-color);
         }
@@ -447,6 +449,7 @@
 <body>
     <!-- 控制栏 -->
     <div class="controls">
+        <a href="blog.html" class="blog-link">📝 博客</a>
         <button class="toc-toggle" onclick="toggleTOC()">📚 目录</button>
         <button class="theme-toggle" onclick="toggleTheme()">🌓 切换主题</button>
     </div>

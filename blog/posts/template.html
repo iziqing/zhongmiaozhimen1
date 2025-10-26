@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章标题 - 众妙之门</title>
+
+    <!-- SEO优化 -->
+    <meta name="description" content="文章描述">
+    <meta name="keywords" content="关键词1,关键词2,关键词3">
+    <meta name="author" content="卿艺">
+
+    <!-- Open Graph / 社交媒体分享 -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="文章标题">
+    <meta property="og:description" content="文章描述">
+    <meta property="og:url" content="https://qingyi.chat/blog/posts/">
+
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --text-color: #e8e6e3;
+            --heading-color: #f5f5dc;
+            --accent-color: #d4af37;
+            --secondary-bg: #1a1a1a;
+            --border-color: #333;
+            --link-color: #87ceeb;
+            --quote-bg: #1a1a2e;
+            --quote-border: #d4af37;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #faf8f3;
+            --text-color: #2c2c2c;
+            --heading-color: #1a1a1a;
+            --accent-color: #8b7355;
+            --secondary-bg: #f0ede5;
+            --border-color: #d4cfc4;
+            --link-color: #4682b4;
+            --quote-bg: #f5f5dc;
+            --quote-border: #8b7355;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Serif SC", "Source Han Serif", "思源宋体", serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 2;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            background: var(--secondary-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-toggle, .toc-toggle {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .theme-toggle:hover, .toc-toggle:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        /* 目录 */
+        .toc {
+            position: fixed;
+            left: -320px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--secondary-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 100px 20px 20px;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
+
+        .toc.active {
+            left: 0;
+        }
+
+        .toc h3 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 10px 0;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.6;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .toc a:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .article-title {
+            font-size: 36px;
+            color: var(--heading-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 16px;
+            color: var(--accent-color);
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 文章内容 */
+        .article-content h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--heading-color);
+            margin: 60px 0 30px;
+            padding-left: 15px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .article-content h3 {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--accent-color);
+            margin: 40px 0 20px;
+        }
+
+        .article-content p {
+            margin: 25px 0;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .article-content blockquote {
+            background: var(--quote-bg);
+            border-left: 4px solid var(--quote-border);
+            padding: 20px 30px;
+            margin: 30px 0;
+            font-style: italic;
+            border-radius: 4px;
+        }
+
+        .article-content blockquote p {
+            text-indent: 0;
+        }
+
+        .article-content strong {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 25px 0 25px 40px;
+        }
+
+        .article-content li {
+            margin: 15px 0;
+        }
+
+        .article-content a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .article-content a:hover {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .article-content hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .article-content hr::after {
+            content: "✦";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-color);
+            padding: 0 15px;
+            color: var(--accent-color);
+        }
+
+        .article-content code {
+            background: var(--secondary-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: "Fira Code", "Consolas", monospace;
+            font-size: 16px;
+        }
+
+        .article-content pre {
+            background: var(--secondary-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        .article-content pre code {
+            padding: 0;
+            background: none;
+        }
+
+        /* 文章底部 */
+        .article-footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .article-nav a {
+            flex: 1;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .article-nav a:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .nav-label {
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .nav-title {
+            font-size: 16px;
+            color: var(--heading-color);
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .nav {
+                padding: 0 20px;
+            }
+
+            .article-title {
+                font-size: 28px;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .article-content h2 {
+                font-size: 24px;
+            }
+
+            .article-content h3 {
+                font-size: 20px;
+            }
+
+            .article-nav {
+                flex-direction: column;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <nav class="nav">
+            <a href="../../index.html" class="nav-brand">众妙之门</a>
+            <div class="nav-links">
+                <a href="../../index.html">主站</a>
+                <a href="../../blog.html">博客</a>
+                <button class="toc-toggle" onclick="toggleTOC()">目录</button>
+                <button class="theme-toggle" onclick="toggleTheme()">切换主题</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 目录 -->
+    <nav class="toc" id="toc">
+        <h3>目录</h3>
+        <ul id="tocList">
+            <!-- 目录会由 JavaScript 自动生成 -->
+        </ul>
+    </nav>
+
+    <!-- 文章内容 -->
+    <div class="container">
+        <!-- 文章头部 -->
+        <header class="article-header">
+            <h1 class="article-title">文章标题</h1>
+            <div class="article-meta">
+                <span class="meta-item">📅 发布时间：2025-01-15</span>
+                <span class="meta-item">🏷️ 分类：哲学思考</span>
+                <span class="meta-item">✍️ 作者：卿艺</span>
+            </div>
+        </header>
+
+        <!-- 文章正文 -->
+        <article class="article-content">
+            <h2 id="section1">第一节标题</h2>
+            <p>这是文章的正文内容。你可以在这里写下你的思考和见解...</p>
+
+            <blockquote>
+                <p>这是一段引用文字。可以用来引用经典或他人的观点。</p>
+            </blockquote>
+
+            <h3 id="subsection1-1">小节标题</h3>
+            <p>继续你的文章内容...</p>
+
+            <ul>
+                <li>列表项 1</li>
+                <li>列表项 2</li>
+                <li>列表项 3</li>
+            </ul>
+
+            <h2 id="section2">第二节标题</h2>
+            <p>更多内容...</p>
+
+            <hr>
+
+            <h2 id="conclusion">结语</h2>
+            <p>文章的结尾部分...</p>
+        </article>
+
+        <!-- 文章底部导航 -->
+        <footer class="article-footer">
+            <div class="article-nav">
+                <a href="../../blog.html">
+                    <div class="nav-label">← 返回</div>
+                    <div class="nav-title">博客首页</div>
+                </a>
+                <!-- 可以添加上一篇/下一篇 -->
+                <!-- <a href="next-article.html">
+                    <div class="nav-label">下一篇 →</div>
+                    <div class="nav-title">下一篇文章标题</div>
+                </a> -->
+            </div>
+        </footer>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        ↑
+    </div>
+
+    <script>
+        // 主题切换
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? '' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // 加载主题偏好
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            // 自动生成目录
+            generateTOC();
+        });
+
+        // 自动生成目录
+        function generateTOC() {
+            const tocList = document.getElementById('tocList');
+            const headings = document.querySelectorAll('.article-content h2, .article-content h3');
+
+            headings.forEach((heading, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+
+                // 如果标题没有 id，自动生成一个
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
+                }
+
+                a.href = `#${heading.id}`;
+                a.textContent = heading.textContent;
+
+                // 根据标题级别添加缩进
+                if (heading.tagName === 'H3') {
+                    a.style.paddingLeft = '20px';
+                    a.style.fontSize = '13px';
+                }
+
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    heading.scrollIntoView({ behavior: 'smooth' });
+                    // 移动端点击后关闭目录
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('toc').classList.remove('active');
+                    }
+                });
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        // 目录切换
+        function toggleTOC() {
+            const toc = document.getElementById('toc');
+            toc.classList.toggle('active');
+        }
+
+        // 点击页面其他地方关闭目录
+        document.addEventListener('click', function(event) {
+            const toc = document.getElementById('toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            if (toc && tocToggle && !toc.contains(event.target) && !tocToggle.contains(event.target)) {
+                toc.classList.remove('active');
+            }
+        });
+
+        // 返回顶部按钮
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
