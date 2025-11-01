@@ -1461,6 +1461,17 @@ flowchart LR
             }
         });
 
+        // 保存原始的 Mermaid 图表定义
+        const mermaidGraphs = [];
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.mermaid').forEach(element => {
+                mermaidGraphs.push({
+                    element: element,
+                    definition: element.textContent
+                });
+            });
+        });
+
         // 主题切换
         function toggleTheme() {
             const html = document.documentElement;
@@ -1471,7 +1482,7 @@ flowchart LR
             // 重新渲染 Mermaid 图表
             const theme = newTheme === 'light' ? 'default' : 'dark';
             mermaid.initialize({
-                startOnLoad: true,
+                startOnLoad: false,
                 theme: theme,
                 themeVariables: newTheme === 'light' ? {
                     primaryColor: '#8b7355',
@@ -1501,12 +1512,15 @@ flowchart LR
             });
 
             // 重新渲染所有图表
-            document.querySelectorAll('.mermaid').forEach(element => {
-                const graphDefinition = element.getAttribute('data-processed');
-                if (graphDefinition) {
-                    element.removeAttribute('data-processed');
-                    mermaid.init(undefined, element);
-                }
+            mermaidGraphs.forEach(graph => {
+                // 清空元素内容
+                graph.element.innerHTML = graph.definition;
+                // 移除已处理标记
+                graph.element.removeAttribute('data-processed');
+                // 重新渲染
+                mermaid.run({
+                    nodes: [graph.element]
+                });
             });
         }
 
